@@ -7,7 +7,7 @@ import urllib.request
 import threading
 from threading import Thread
 
-i=1
+i=85
 exshops = [5,19,21,44,50]
 class OpenURL(Thread):
     
@@ -48,19 +48,22 @@ while True:
            break	 
   i+=1
   u=1
+  t=0
   threads = []
   if urls:
     for url in urls:
       name = "Thread num: %s" % str(u)
       thread = OpenURL(url, name)
       thread.start()
-      u+=1
       threads.append(thread)
+      u+=1
     for thread in threads:
+       t+=1
        thread.join()
+       if t<2:
+          break
     threads = []
     #time.sleep(300)
-    if n==iend:
-       n=0
-       print('Start parsing again!')
-
+  if i==iend:
+     i=1
+     print('Start parsing again!')
