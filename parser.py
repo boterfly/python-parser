@@ -8,7 +8,7 @@ import threading
 from threading import Thread
 
 i=1
-exshops = [5,19,21,44,55]
+exshops = [5,19,21,44,50]
 class OpenURL(Thread):
     
     def __init__(self, url, name):
@@ -27,7 +27,7 @@ class OpenURL(Thread):
 if len(sys.argv)>1:
    nend = sys.argv[1]
 else:
-   nend = 20
+   nend = 30
 #Второй аргумент определяет кол-во категорий товаров, если не указан по умолчанию выставляется 100
 if len(sys.argv)>2:
    iend = sys.argv[2]
@@ -48,15 +48,19 @@ while True:
            break	 
   i+=1
   u=1
+  threads = []
   if urls:
     for url in urls:
       name = "Thread num: %s" % str(u)
       thread = OpenURL(url, name)
       thread.start()
-      if (int(u) % 2 == 0):
-        time.sleep(300)
       u+=1
-    if i==iend:
-      i=0
-      print('Start parsing again!')
+      threads.append(thread)
+    for thread in threads:
+       thread.join()
+    threads = []
+    #time.sleep(300)
+    if n==iend:
+       n=0
+       print('Start parsing again!')
 
